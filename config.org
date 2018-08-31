@@ -1,0 +1,244 @@
+* Installation
+  Clone this repo into ~/.emacs.d/ and launch Emacs.
+  #+BEGIN_SRC bash
+  git clone https://github.com/jenterkin/emacs-config.git ~/.emacs.d/
+  #+END_SRC
+
+* Setup use-package
+** Install use-package
+  #+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (setq package-enable-at-startup nil)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+  (package-initialize)
+
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (eval-when-compile
+    (require 'use-package))
+  #+END_SRC
+
+** Always make sure pacakges are installed
+   #+BEGIN_SRC emacs-lisp
+   (setq use-package-always-ensure t)
+   #+END_SRC
+
+* Appearance
+** Color Theme
+   [[https://github.com/hlissner/emacs-doom-themes][GitHub Page]]
+    #+BEGIN_SRC emacs-lisp
+    (use-package doom-themes
+      :init (load-theme 'doom-nord t)
+      :config (doom-themes-neotree-config))
+    (setq doom-themes-enable-bold t)
+    (setq doom-themes-enable-italic t)
+    #+END_SRC
+
+** Dark minor modes
+   #+BEGIN_SRC emacs-lisp
+   (use-package solaire-mode
+     :hook ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode)
+     :config
+     (add-hook 'minibuffer-setup-hook #'solaire-mode-in-minibuffer)
+     (solaire-mode-swap-bg))
+   #+END_SRC
+
+** Line numbers
+   #+BEGIN_SRC emacs-lisp
+   (global-linum-mode 1)
+   (setq linum-format " %4d ")
+   #+END_SRC
+
+** Disable UI elements
+*** Menu bar
+    #+BEGIN_SRC emacs-lisp
+    (menu-bar-mode -1)
+    #+END_SRC
+
+*** Tool bar
+    #+BEGIN_SRC emacs-lisp
+    (tool-bar-mode -1)
+    #+END_SRC
+
+*** Scroll bar
+    #+BEGIN_SRC emacs-lisp
+    (toggle-scroll-bar -1)
+    #+END_SRC
+
+** Icons
+   All The Icons
+   [[https://github.com/domtronn/all-the-icons.el][GitHub Page]]
+   #+BEGIN_SRC emacs-lisp
+   (use-package all-the-icons)
+   ; Run the following after initial install:
+   ; M-x all-the-icons-install-fonts
+   #+END_SRC
+
+* Neotree
+  [[https://github.com/jaypei/emacs-neotree][GitHub Page]]
+  #+BEGIN_SRC emacs-lisp
+  (use-package neotree)
+  #+END_SRC
+
+** evil-mode compatibility
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'neotree-mode-hook
+     (lambda ()
+       (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+       (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
+       (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+       (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
+       (define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
+       (define-key evil-normal-state-local-map (kbd "n") 'neotree-next-line)
+       (define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
+       (define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
+       (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
+   #+END_SRC
+
+* Org Mode
+** Require package
+   #+BEGIN_SRC emacs-lisp
+   (require 'org)
+   #+END_SRC
+
+** Make it fancy
+*** org-bullets
+    #+BEGIN_SRC emacs-lisp
+    (use-package org-bullets
+      :config
+      (progn
+        (require 'org-bullets)
+        (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))))
+    #+END_SRC
+
+** Make it evil
+   #+BEGIN_SRC emacs-lisp
+   ; (use-package evil-org
+   ;   :defer t
+   ;   :config
+   ;   (progn
+   ;     (add-hook 'org-mode-hook 'evil-org-mode)
+   ; 	 (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+   ; 	 (require 'evil-org-agenda)
+   ; 	 (evil-org-agenda-set-keys)))
+   #+END_SRC
+
+** Exporter Packages
+*** htmlize
+    #+BEGIN_SRC emacs-lisp
+    (use-package htmlize)
+    #+END_SRC
+
+*** ox-twbs
+    #+BEGIN_SRC emacs-lisp
+    (use-package ox-twbs)
+    #+END_SRC
+
+* Evil Mode
+** Set up leader
+   =evil-leader= must be enabled before =evil-mode=, otherwise it won't be enabled for initial buffers.
+   #+BEGIN_SRC emacs-lisp
+   (use-package evil-leader
+     :config
+     (global-evil-leader-mode))
+   #+END_SRC
+
+*** Set leader to <SPC>
+    #+BEGIN_SRC emacs-lisp
+    ; (evil-leader/set
+    #+END_SRC
+
+** Install evil-mode
+   #+BEGIN_SRC emacs-lisp
+   (use-package evil
+     :init
+     (progn
+       (setq evil-default-cursor t)
+       (evil-mode 1)))
+   #+END_SRC
+
+* Languages
+** Python
+*** anaconda-mode
+    #+BEGIN_SRC emacs-lisp
+    (use-package anaconda-mode
+      :config
+      (progn
+        (add-hook 'python-mode-hook 'anaconda-mode)
+        (add-hook 'python-mode-hook 'anaconda-eldoc-mode)))
+    #+END_SRC
+
+** Go
+*** go-mode
+    Major version for Go
+    [[https://github.com/dominikh/go-mode.el][GitHub Page]]
+    #+BEGIN_SRC emacs-lisp
+    (use-package go-mode)
+    #+END_SRC
+
+* Which Key
+  [[https://github.com/justbur/emacs-which-key][GitHub page]]
+  Show keybindings for current incomplete command.
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :config
+  (progn
+    (which-key-mode 1)
+    (setq which-key-allow-evil-operators 1)
+    (setq which-key-idle-delay 0.25)))
+(provide 'setup-which-key)
+#+END_SRC
+
+* Docker
+** Packages
+*** dockerfile-mode
+    Major mode for Dockerfiles
+    [[https://github.com/spotify/dockerfile-mode][GitHub Page]]
+    #+BEGIN_SRC emacs-lisp
+    (use-package dockerfile-mode)
+    #+END_SRC
+
+*** docker
+    Control Docker from Emacs
+    [[https://github.com/Silex/docker.el][GitHub Page]]
+    #+BEGIN_SRC emacs-lisp
+    (use-package docker
+      :bind ("C-c d" . docker))
+    #+END_SRC
+
+* Mode Line
+  The mode line from Spacemacs
+  [[https://github.com/TheBB/spaceline][GitHub Page]]
+  #+BEGIN_SRC emacs-lisp
+  (use-package spaceline
+    :init
+    (require 'spaceline-config)
+    (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+    :config
+    (spaceline-spacemacs-theme))
+  #+END_SRC
+
+** Theme
+   Spaceline All The Icons Theme
+   [[https://github.com/domtronn/spaceline-all-the-icons.el][GitHub Page]]
+   #+BEGIN_SRC emacs-lisp
+   (use-package spaceline-all-the-icons
+     :after (all-the-icons spaceline)
+     :config (spaceline-all-the-icons-theme))
+   #+END_SRC
+
+* Version Control
+** Packages
+*** magit
+    [[https://github.com/magit/magit][GitHub Page]]
+    #+BEGIN_SRC emacs-lisp
+    (use-package magit)
+    #+END_SRC
+
+* Setup Dashboard
+  #+BEGIN_SRC emacs-lisp
+  (setq initial-buffer-choice "~/Documents/org/index.org")
+  #+END_SRC
+
