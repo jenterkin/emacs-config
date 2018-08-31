@@ -283,12 +283,12 @@
 
 ** Magit
 *** Key Bindings
-    | Keys  | Function                           |
-    |-------+------------------------------------|
-    | =SPC g S= | =magit-status=                     |
+    | Keys        | Function                           |
+    |-------------+------------------------------------|
+    | =SPC g S=   | =magit-status=                     |
     | =SPC g s f= | =magit-stage-file=                 |
-    | =SPC g c= | =magit-commit=                     |
-    | =SPC g P= | =magit-push-current-to-pushremote= |
+    | =SPC g c=   | =magit-commit=                     |
+    | =SPC g P=   | =magit-push-current-to-pushremote= |
 *** Define project prefix command
     #+BEGIN_SRC emacs-lisp
     (define-prefix-command 'magit)
