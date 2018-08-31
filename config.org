@@ -296,25 +296,12 @@
     #+END_SRC
 
 *** Define magit key bindings
-**** Status
-     #+BEGIN_SRC emacs-lisp
-     (define-key evil-normal-state-map (kbd "SPC g S") 'magit-status)
-     #+END_SRC
-
-**** Staging
-     #+BEGIN_SRC emacs-lisp
-     (define-key evil-normal-state-map (kbd "SPC g s f") 'magit-stage-file)
-     #+END_SRC
-
-**** Commit
-     #+BEGIN_SRC emacs-lisp
-     (define-key evil-normal-state-map (kbd "SPC g c") 'magit-commit)
-     #+END_SRC
-     
-**** Pushing
-     #+BEGIN_SRC emacs-lisp
-     (define-key evil-normal-state-map (kbd "SPC g P") 'magit-push-current-to-pushremote)
-     #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+    (define-key evil-normal-state-map (kbd "SPC g S") 'magit-status)
+    (define-key evil-normal-state-map (kbd "SPC g s f") 'magit-stage-file)
+    (define-key evil-normal-state-map (kbd "SPC g c") 'magit-commit)
+    (define-key evil-normal-state-map (kbd "SPC g P") 'magit-push-current-to-pushremote)
+    #+END_SRC
 
 ** neotree evil-mode compatibility
    #+BEGIN_SRC emacs-lisp
