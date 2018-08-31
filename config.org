@@ -82,21 +82,6 @@
   (use-package neotree)
   #+END_SRC
 
-** evil-mode compatibility
-   #+BEGIN_SRC emacs-lisp
-   (add-hook 'neotree-mode-hook
-     (lambda ()
-       (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
-       (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
-       (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
-       (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
-       (define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
-       (define-key evil-normal-state-local-map (kbd "n") 'neotree-next-line)
-       (define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
-       (define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
-       (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
-   #+END_SRC
-
 * Org Mode
 ** Require package
    #+BEGIN_SRC emacs-lisp
@@ -253,19 +238,6 @@
 ** Open neotree menu at project root
    I almost never want to open neotree in my current directory. Opening at the project level makes more sense.
    #+BEGIN_SRC emacs-lisp
-     (defun neotree-project-dir ()
-       "Open NeoTree using the project root."
-       (interactive)
-       (let ((project-dir (projectile-project-root))
-	     (file-name (buffer-file-name)))
-	 (neotree-toggle)
-	 (if project-dir
-	     (if (neo-global--window-exists-p)
-		 (progn
-		   (neotree-dir project-dir)
-		   (neotree-find file-name)))
-	   (message "Could not find project root."))))
-     (global-set-key [f8] 'neotree-project-dir)
    #+END_SRC
 
 * Setup Dashboard
@@ -282,3 +254,46 @@
       (load-file "~/.emacs.d/init.el"))
     (evil-leader/set-key "r" 'reload-init-file)
     #+END_SRC
+
+** Projects
+*** Define project prefix command
+    We want =which-key= to give us useful options. Without defining a prefix command, the menu item for a prefix, will simply say =+prefix=.
+    #+BEGIN_SRC emacs-lisp
+    (define-prefix-command 'project)
+    (define-key evil-normal-state-map (kbd "SPC p") 'project)
+    #+END_SRC
+
+*** Open neotree in project
+    Here we define a function that opens up neotree at the current project, then map that to ="SPC p t"=.
+    #+BEGIN_SRC emacs-lisp
+     (defun neotree-project-dir ()
+       "Open NeoTree using the project root."
+       (interactive)
+       (let ((project-dir (projectile-project-root))
+	     (file-name (buffer-file-name)))
+	 (neotree-toggle)
+	 (if project-dir
+	     (if (neo-global--window-exists-p)
+		 (progn
+		   (neotree-dir project-dir)
+		   (neotree-find file-name)))
+	   (message "Could not find project root."))))
+     (define-key evil-normal-state-map (kbd "SPC p t") 'neotree-project-dir)
+     #+END_SRC
+
+** neotree evil-mode compatibility
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'neotree-mode-hook
+     (lambda ()
+       (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+       (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
+       (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+       (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
+       (define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
+       (define-key evil-normal-state-local-map (kbd "n") 'neotree-next-line)
+       (define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
+       (define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
+       (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
+   #+END_SRC
+
+
