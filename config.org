@@ -142,7 +142,8 @@
    #+BEGIN_SRC emacs-lisp
    (use-package evil-leader
      :config
-     (global-evil-leader-mode))
+     (global-evil-leader-mode)
+     (evil-leader/set-leader "<SPC>"))
    #+END_SRC
 
 *** Set leader to <SPC>
@@ -272,3 +273,12 @@
   (setq initial-buffer-choice "~/Documents/org/index.org")
   #+END_SRC
 
+* Key Bindings
+** Configuration
+*** Reload Config
+    #+BEGIN_SRC emacs-lisp
+    (defun reload-init-file ()
+      (interactive)
+      (load-file "~/.emacs.d/init.el"))
+    (evil-leader/set-key "r" 'reload-init-file)
+    #+END_SRC
