@@ -242,6 +242,31 @@
     (use-package evil-magit)
     #+END_SRC
 
+* Projects
+** projectile
+   [[https://github.com/bbatsov/projectile][GitHub Page]]
+   #+BEGIN_SRC emacs-lisp
+   (use-package projectile)
+   #+END_SRC
+
+** Open neotree menu at project root
+   I almost never want to open neotree in my current directory. Opening at the project level makes more sense.
+   #+BEGIN_SRC emacs-lisp
+     (defun neotree-project-dir ()
+       "Open NeoTree using the project root."
+       (interactive)
+       (let ((project-dir (projectile-project-root))
+	     (file-name (buffer-file-name)))
+	 (neotree-toggle)
+	 (if project-dir
+	     (if (neo-global--window-exists-p)
+		 (progn
+		   (neotree-dir project-dir)
+		   (neotree-find file-name)))
+	   (message "Could not find project root."))))
+     (global-set-key [f8] 'neotree-project-dir)
+   #+END_SRC
+
 * Setup Dashboard
   #+BEGIN_SRC emacs-lisp
   (setq initial-buffer-choice "~/Documents/org/index.org")
