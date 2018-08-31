@@ -315,7 +315,7 @@
 	    (message "Could not find project root."))))
       (define-key evil-normal-state-map (kbd "SPC p t") 'neotree-project-dir)
       (define-key evil-normal-state-map (kbd "SPC p f f") 'helm-projectile-find-file)
-      (define-key evil-normal-state-map (kbd "SPC p a") 'helm-projectile-ag)
+      (define-key evil-normal-state-map (kbd "SPC p s") 'helm-projectile-ag)
     #+END_SRC
 
 ** Magit
