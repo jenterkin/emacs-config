@@ -290,6 +290,7 @@
    |-------------+-----------------------------|
    | =SPC p t=   | =neotree-project-dir=       |
    | =SPC p f f= | =helm-projectile-find-file= |
+   | =SPC p s=   | =helm-projectile-ag=        |
 *** Define project prefix command
     We want =which-key= to give us useful options. Without defining a prefix command, the menu item for a prefix, will simply say =+prefix=.
     #+BEGIN_SRC emacs-lisp
@@ -314,6 +315,7 @@
 	    (message "Could not find project root."))))
       (define-key evil-normal-state-map (kbd "SPC p t") 'neotree-project-dir)
       (define-key evil-normal-state-map (kbd "SPC p f f") 'helm-projectile-find-file)
+      (define-key evil-normal-state-map (kbd "SPC p a") 'helm-projectile-ag)
     #+END_SRC
 
 ** Magit
