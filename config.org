@@ -76,6 +76,36 @@
    ; M-x all-the-icons-install-fonts
    #+END_SRC
 
+* Packages
+* Helm
+  [[https://github.com/emacs-helm/helm][GitHub Page]]
+  #+BEGIN_SRC emacs-lisp
+    (use-package helm)
+  #+END_SRC
+
+** Always open on bottom
+   [[https://www.reddit.com/r/emacs/comments/345vtl/make_helm_window_at_the_bottom_without_using_any/][Found on reddit]]
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'display-buffer-alist
+		  `(,(rx bos "*helm" (* not-newline) "*" eos)
+		    (display-buffer-in-side-window)
+		    (inhibit-same-window . t)
+		    (window-height . 0.4)))
+   #+END_SRC
+
+** Additional Pacakges
+*** helm-projectile
+   [[https://github.com/bbatsov/helm-projectile][GitHub Page]]
+   #+BEGIN_SRC emacs-lisp
+     (use-package helm-projectile)
+   #+END_SRC
+
+*** helm-ag
+   [[https://github.com/syohex/emacs-helm-ag][GitHub Page]]
+   #+BEGIN_SRC emacs-lisp
+     (use-package helm-ag)
+   #+END_SRC
+
 * Neotree
   [[https://github.com/jaypei/emacs-neotree][GitHub Page]]
   #+BEGIN_SRC emacs-lisp
@@ -256,6 +286,11 @@
     #+END_SRC
 
 ** Projects
+   | Keys        | Function                    |
+   |-------------+-----------------------------|
+   | =SPC p t=   | =neotree-project-dir=       |
+   | =SPC p f f= | =helm-projectile-find-file= |
+#+TBLFM: $1=SPC p f f::$2=neotree-project-dir
 *** Define project prefix command
     We want =which-key= to give us useful options. Without defining a prefix command, the menu item for a prefix, will simply say =+prefix=.
     #+BEGIN_SRC emacs-lisp
@@ -281,6 +316,10 @@
      (define-key evil-normal-state-map (kbd "SPC p t") 'neotree-project-dir)
      #+END_SRC
 
+*** Search in project
+    #+BEGIN_SRC emacs-lisp
+      (define-key evil-normal-state-map (kbd "SPC p f f") 'helm-projectile-find-file)
+    #+END_SRC
 ** Magit
 *** Key Bindings
     | Keys        | Function                           |
