@@ -236,6 +236,11 @@
     #+BEGIN_SRC emacs-lisp
     (use-package magit)
     #+END_SRC
+*** evil-magit
+    [[https://github.com/emacs-evil/evil-magit][GitHub Page]]
+    #+BEGIN_SRC emacs-lisp
+    (use-package evil-magit)
+    #+END_SRC
 
 * Setup Dashboard
   #+BEGIN_SRC emacs-lisp
