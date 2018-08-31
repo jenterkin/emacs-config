@@ -290,7 +290,6 @@
    |-------------+-----------------------------|
    | =SPC p t=   | =neotree-project-dir=       |
    | =SPC p f f= | =helm-projectile-find-file= |
-#+TBLFM: $1=SPC p f f::$2=neotree-project-dir
 *** Define project prefix command
     We want =which-key= to give us useful options. Without defining a prefix command, the menu item for a prefix, will simply say =+prefix=.
     #+BEGIN_SRC emacs-lisp
@@ -298,28 +297,25 @@
     (define-key evil-normal-state-map (kbd "SPC p") 'project)
     #+END_SRC
 
-*** Open neotree in project
+*** Key mappings
     Here we define a function that opens up neotree at the current project, then map that to ="SPC p t"=.
     #+BEGIN_SRC emacs-lisp
-     (defun neotree-project-dir ()
-       "Open NeoTree using the project root."
-       (interactive)
-       (let ((project-dir (projectile-project-root))
-	     (file-name (buffer-file-name)))
-	 (neotree-toggle)
-	 (if project-dir
-	     (if (neo-global--window-exists-p)
-		 (progn
-		   (neotree-dir project-dir)
-		   (neotree-find file-name)))
-	   (message "Could not find project root."))))
-     (define-key evil-normal-state-map (kbd "SPC p t") 'neotree-project-dir)
-     #+END_SRC
-
-*** Search in project
-    #+BEGIN_SRC emacs-lisp
+      (defun neotree-project-dir ()
+	"Open NeoTree using the project root."
+	(interactive)
+	(let ((project-dir (projectile-project-root))
+	      (file-name (buffer-file-name)))
+	  (neotree-toggle)
+	  (if project-dir
+	      (if (neo-global--window-exists-p)
+		  (progn
+		    (neotree-dir project-dir)
+		    (neotree-find file-name)))
+	    (message "Could not find project root."))))
+      (define-key evil-normal-state-map (kbd "SPC p t") 'neotree-project-dir)
       (define-key evil-normal-state-map (kbd "SPC p f f") 'helm-projectile-find-file)
     #+END_SRC
+
 ** Magit
 *** Key Bindings
     | Keys        | Function                           |
