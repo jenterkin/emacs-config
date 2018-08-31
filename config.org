@@ -351,8 +351,7 @@
     | =SPC g c=   | =magit-commit=                     |
     | =SPC g P=   | =magit-push-current-to-pushremote= |
     | =SPC g b c= | =magit-branch-checkout=            |
-#+TBLFM: $2=magit-checkou
-*** Define project prefix command
+*** Define magit prefix command
     #+BEGIN_SRC emacs-lisp
     (define-prefix-command 'magit)
     (define-key evil-normal-state-map (kbd "SPC g") 'magit)
