@@ -336,6 +336,8 @@
     | =SPC g s f= | =magit-stage-file=                 |
     | =SPC g c=   | =magit-commit=                     |
     | =SPC g P=   | =magit-push-current-to-pushremote= |
+    | =SPC g b c= | =magit-branch-checkout=            |
+#+TBLFM: $2=magit-checkou
 *** Define project prefix command
     #+BEGIN_SRC emacs-lisp
     (define-prefix-command 'magit)
@@ -348,6 +350,7 @@
     (define-key evil-normal-state-map (kbd "SPC g s f") 'magit-stage-file)
     (define-key evil-normal-state-map (kbd "SPC g c") 'magit-commit)
     (define-key evil-normal-state-map (kbd "SPC g P") 'magit-push-current-to-pushremote)
+    (define-key evil-normal-state-map (kbd "SPC g b c") 'magit-branch-checkout)
     #+END_SRC
 
 ** neotree evil-mode compatibility
