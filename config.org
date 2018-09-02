@@ -76,7 +76,16 @@
    ; M-x all-the-icons-install-fonts
    #+END_SRC
 
-* Packages
+* Markdown
+  #+BEGIN_SRC emacs-lisp
+    (use-package markdown-mode
+      :ensure t
+      :commands (markdown-mode gfm-mode)
+      :mode (("README\\.md\\'" . gfm-mode)
+	     ("\\.md\\'" . markdown-mode)
+	     ("\\.markdown\\'" . markdown-mode))
+      :init (setq markdown-command "pandoc"))
+  #+END_SRC
 * Helm
   [[https://github.com/emacs-helm/helm][GitHub Page]]
   #+BEGIN_SRC emacs-lisp
@@ -130,14 +139,15 @@
 
 ** Make it evil
    #+BEGIN_SRC emacs-lisp
-   ; (use-package evil-org
-   ;   :defer t
-   ;   :config
-   ;   (progn
-   ;     (add-hook 'org-mode-hook 'evil-org-mode)
-   ; 	 (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
-   ; 	 (require 'evil-org-agenda)
-   ; 	 (evil-org-agenda-set-keys)))
+   (use-package evil-org
+     :defer t
+     :config
+     (progn
+       (add-hook 'org-mode-hook 'evil-org-mode)
+	    (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+	    (require 'evil-org-agenda)
+   	 (evil-org-agenda-set-keys)
+	 (define-key evil-normal-state-map (kbd ">>") 'org-metaright)))
    #+END_SRC
 
 ** Exporter Packages
