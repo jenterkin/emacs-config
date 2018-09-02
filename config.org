@@ -86,6 +86,7 @@
 	     ("\\.markdown\\'" . markdown-mode))
       :init (setq markdown-command "pandoc"))
   #+END_SRC
+
 * Helm
   [[https://github.com/emacs-helm/helm][GitHub Page]]
   #+BEGIN_SRC emacs-lisp
