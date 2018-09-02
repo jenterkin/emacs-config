@@ -196,6 +196,19 @@
         (add-hook 'python-mode-hook 'anaconda-eldoc-mode)))
     #+END_SRC
 
+*** fly-check
+    Must install dependencies before use:
+    #+BEGIN_SRC
+    pip install --user pylint
+    #+END_SRC
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package flycheck
+	:init (global-flycheck-mode)
+	:config
+	(add-hook 'after-init-hook #'global-flycheck-mode))
+    #+END_SRC
+
 ** Go
 *** go-mode
     Major version for Go
