@@ -215,7 +215,7 @@
       (use-package flycheck
 	:init (global-flycheck-mode)
 	:config
-	(add-hook 'after-init-hook #'global-flycheck-mode))
+	(add-hook 'after-init-hook 'global-flycheck-mode))
     #+END_SRC
 
 ** Go
