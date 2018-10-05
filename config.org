@@ -402,4 +402,8 @@
        (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
    #+END_SRC
 
-
+* Editing
+** Autoamtically remove trailing whitespace
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'before-save-hook 'delete-trailing-whitespace)
+   #+END_SRC
