@@ -186,6 +186,14 @@
        (evil-mode 1)))
    #+END_SRC
 
+** jj for <Esc>
+   #+BEGIN_SRC emacs-lisp
+     (use-package key-chord
+       :config
+       (setq key-chord-two-keys-delay 0.5)
+       (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+       (key-chord-mode 1))
+   #+END_SRC
 * Languages
 ** Python
 *** anaconda-mode
