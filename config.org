@@ -248,6 +248,19 @@
       :bind ("C-c d" . docker))
     #+END_SRC
 
+* YAML
+** Packages
+   #+BEGIN_SRC emacs-lisp
+     (use-package yaml-mode
+       :mode (
+	      ("\\.yml\\'" . yaml-mode)
+	      ("\\.yaml\\'" . yaml-mode))
+       :config
+       (add-hook 'yaml-mode-hook
+	   '(lambda ()
+	     (define-key yaml-mode-map "\C-m" 'newline-and-indent))))
+   #+END_SRC
+
 * Mode Line
   The mode line from Spacemacs
   [[https://github.com/TheBB/spaceline][GitHub Page]]
