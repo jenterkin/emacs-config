@@ -26,6 +26,13 @@
    #+END_SRC
 
 * Appearance
+** Font
+   Use the font `Source Code Pro` with a size of 12px.
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'default-frame-alist '(font . "Source Code Pro-10"))
+     (set-face-attribute 'default t :font "Source Code Pro-10")
+   #+END_SRC
+
 ** Color Theme
    [[https://github.com/hlissner/emacs-doom-themes][GitHub Page]]
     #+BEGIN_SRC emacs-lisp
