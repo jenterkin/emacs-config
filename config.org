@@ -37,7 +37,7 @@
    [[https://github.com/hlissner/emacs-doom-themes][GitHub Page]]
     #+BEGIN_SRC emacs-lisp
     (use-package doom-themes
-      :init (load-theme 'doom-nord t)
+      :init (load-theme 'doom-city-lights t)
       :config (doom-themes-neotree-config))
     (setq doom-themes-enable-bold t)
     (setq doom-themes-enable-italic t)
