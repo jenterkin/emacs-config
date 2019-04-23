@@ -219,17 +219,25 @@
 	(elpy-enable))
     #+END_SRC
 
-*** fly-check
+*** flycheck
     Must install dependencies before use:
     #+BEGIN_SRC
     pip install --user pylint
     #+END_SRC
 
     #+BEGIN_SRC emacs-lisp
-      (use-package flycheck
-	:init (global-flycheck-mode)
-	:config
-	(add-hook 'after-init-hook 'global-flycheck-mode))
+      (use-package flycheck-pycheckers)
+	(use-package flycheck
+	  :init (global-flycheck-mode 1)
+	  :config
+	  (add-hook 'after-init-hook 'global-flycheck-mode))
+      (with-eval-after-load 'flycheck
+	(add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
+    #+END_SRC
+
+*** flycheck-mypy
+    #+BEGIN_SRC emacs-lisp
+    (use-package flycheck-mypy)
     #+END_SRC
 
 ** Go
