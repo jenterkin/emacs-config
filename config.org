@@ -332,6 +332,12 @@
    (use-package projectile)
    #+END_SRC
 
+** Load direnv files
+   #+BEGIN_SRC emacs-lisp
+     (use-package direnv)
+     (direnv-mode)
+   #+END_SRC
+
 ** Open neotree menu at project root
    I almost never want to open neotree in my current directory. Opening at the project level makes more sense.
    #+BEGIN_SRC emacs-lisp
