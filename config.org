@@ -36,26 +36,30 @@
 ** Color Theme
    [[https://github.com/hlissner/emacs-doom-themes][GitHub Page]]
     #+BEGIN_SRC emacs-lisp
-    (use-package doom-themes
-      :init (load-theme 'doom-city-lights t)
-      :config (doom-themes-neotree-config))
-    (setq doom-themes-enable-bold t)
-    (setq doom-themes-enable-italic t)
+      (use-package doom-themes
+	:init
+	(load-theme 'doom-nord t))
+      (setq doom-themes-enable-bold t)
+      (doom-themes-org-config)
+      (doom-themes-neotree-config)
     #+END_SRC
 
-** Dark minor modes
+** Visually distinguise windows with files open
+   For instance, if you have a file open with a magit status window open, the file window will be brighter.
    #+BEGIN_SRC emacs-lisp
-   (use-package solaire-mode
-     :hook ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode)
-     :config
-     (add-hook 'minibuffer-setup-hook #'solaire-mode-in-minibuffer)
-     (solaire-mode-swap-bg))
+     (use-package solaire-mode
+       :ensure t
+       :config
+       (solaire-global-mode +1)
+       (solaire-mode-swap-bg))
    #+END_SRC
 
 ** Line numbers
+   Show relative line numbers
    #+BEGIN_SRC emacs-lisp
-   (global-linum-mode 1)
-   (setq linum-format " %4d ")
+     (setq display-line-numbers-type 'relative)
+     ; Only show line numbers in buffers with code
+     (add-hook 'prog-mode-hook #'display-line-numbers-mode)
    #+END_SRC
 
 ** Disable UI elements
@@ -78,9 +82,15 @@
    All The Icons
    [[https://github.com/domtronn/all-the-icons.el][GitHub Page]]
    #+BEGIN_SRC emacs-lisp
-   (use-package all-the-icons)
+   (use-package all-the-icons
+     :ensure t)
    ; Run the following after initial install:
    ; M-x all-the-icons-install-fonts
+   #+END_SRC
+
+** Highlight current line
+   #+BEGIN_SRC emacs-lisp
+     (global-hl-line-mode 1)
    #+END_SRC
 
 * Markdown
@@ -92,6 +102,14 @@
 	     ("\\.md\\'" . markdown-mode)
 	     ("\\.markdown\\'" . markdown-mode))
       :init (setq markdown-command "pandoc"))
+  #+END_SRC
+
+* Eyebrows
+  #+BEGIN_SRC emacs-lisp
+    (use-package eyebrowse
+      :ensure t
+      :init
+      (eyebrowse-mode 1))
   #+END_SRC
 
 * Helm
@@ -126,13 +144,36 @@
 * Neotree
   [[https://github.com/jaypei/emacs-neotree][GitHub Page]]
   #+BEGIN_SRC emacs-lisp
-  (use-package neotree)
+    (use-package neotree
+      :ensure t)
+  #+END_SRC
+
+* LSP
+  #+BEGIN_SRC emacs-lisp
+    (use-package lsp-mode
+      :ensure t
+      :init
+      (setq lsp-enable-snippet nil)
+      :config
+      (add-hook 'python-mode-hook 'lsp)
+      (add-hook 'rust-mode-hook 'lsp))
+
+    (use-package lsp-ui :commands lsp-ui-mode)
+    (use-package company-lsp :commands company-lsp)
+    (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+    (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+    (use-package dap-mode)
   #+END_SRC
 
 * Org Mode
 ** Require package
    #+BEGIN_SRC emacs-lisp
    (require 'org)
+   #+END_SRC
+
+** Show line numbers
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'org-mode-hook #'display-line-numbers-mode)
    #+END_SRC
 
 ** Make it fancy
@@ -201,45 +242,8 @@
        (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
        (key-chord-mode 1))
    #+END_SRC
+
 * Languages
-** Python
-*** anaconda-mode
-    #+BEGIN_SRC emacs-lisp
-    (use-package anaconda-mode
-      :config
-      (progn
-        (add-hook 'python-mode-hook 'anaconda-mode)
-        (add-hook 'python-mode-hook 'anaconda-eldoc-mode)))
-    #+END_SRC
-*** elpy
-    #+BEGIN_SRC emacs-lisp
-      (use-package elpy
-	:ensure t
-	:init
-	(elpy-enable))
-    #+END_SRC
-
-*** flycheck
-    Must install dependencies before use:
-    #+BEGIN_SRC
-    pip install --user pylint
-    #+END_SRC
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package flycheck-pycheckers)
-	(use-package flycheck
-	  :init (global-flycheck-mode 1)
-	  :config
-	  (add-hook 'after-init-hook 'global-flycheck-mode))
-      (with-eval-after-load 'flycheck
-	(add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
-    #+END_SRC
-
-*** flycheck-mypy
-    #+BEGIN_SRC emacs-lisp
-    (use-package flycheck-mypy)
-    #+END_SRC
-
 ** Go
 *** go-mode
     Major version for Go
@@ -295,12 +299,14 @@
   The mode line from Spacemacs
   [[https://github.com/TheBB/spaceline][GitHub Page]]
   #+BEGIN_SRC emacs-lisp
-  (use-package spaceline
-    :init
-    (require 'spaceline-config)
-    (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-    :config
-    (spaceline-spacemacs-theme))
+    (use-package spaceline
+      :init
+      (require 'spaceline-config)
+      (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state))
+
+    (use-package spaceline-all-the-icons
+      :after spaceline
+      :config (spaceline-all-the-icons-theme))
   #+END_SRC
 
 ** Theme
@@ -319,10 +325,33 @@
     #+BEGIN_SRC emacs-lisp
     (use-package magit)
     #+END_SRC
+
+**** Show vertical blame buffer by default
+     #+BEGIN_SRC emacs-lisp
+       (require 'magit)
+       (setq magit-blame-echo-style 'margin)
+     #+END_SRC
+
 *** evil-magit
     [[https://github.com/emacs-evil/evil-magit][GitHub Page]]
     #+BEGIN_SRC emacs-lisp
     (use-package evil-magit)
+    #+END_SRC
+
+*** show line changes in buffer
+    #+BEGIN_SRC emacs-lisp
+      (use-package git-gutter
+	:ensure t
+	:config
+	(global-git-gutter-mode +1)
+	(custom-set-variables
+	 '(git-gutter:modified-sign " ")
+	 '(git-gutter:added-sign " ")
+	 '(git-gutter:deleted-sign " "))
+
+	(set-face-background 'git-gutter:modified "#d08770")
+	(set-face-background 'git-gutter:added "#a3be8c")
+	(set-face-background 'git-gutter:deleted "#vf616a"))
     #+END_SRC
 
 * Projects
@@ -334,8 +363,9 @@
 
 ** Load direnv files
    #+BEGIN_SRC emacs-lisp
-     (use-package direnv)
-     (direnv-mode)
+     (use-package direnv
+       :config
+       (direnv-mode))
    #+END_SRC
 
 ** Open neotree menu at project root
@@ -368,7 +398,11 @@
     We want =which-key= to give us useful options. Without defining a prefix command, the menu item for a prefix, will simply say =+prefix=.
     #+BEGIN_SRC emacs-lisp
     (define-prefix-command 'project)
+    (which-key-add-key-based-replacements "SPC p" "project")
     (define-key evil-normal-state-map (kbd "SPC p") 'project)
+
+    (define-prefix-command 'project-find)
+    (which-key-add-key-based-replacements "SPC p f" "find")
     #+END_SRC
 
 *** Key mappings
@@ -391,6 +425,26 @@
       (define-key evil-normal-state-map (kbd "SPC p s") 'helm-projectile-ag)
     #+END_SRC
 
+** LSP
+*** Key Bindings
+    | Keys      | Function                   |
+    |-----------+----------------------------|
+    | =, d=     | =lsp-find-definition=      |
+    | =SPC l e= | =lsp-treemacs-errors-list= |
+    #+TBLFM: $1=SPC l e
+
+*** Define prefixes
+    #+BEGIN_SRC emacs-lisp
+      (define-prefix-command 'language-server)
+      (define-key evil-normal-state-map (kbd "SPC l") 'language-server)
+      ; (which-key-add-key-based-replacements "SPC l" "language-server")
+    #+END_SRC
+*** Define key bindings
+    #+BEGIN_SRC emacs-lisp
+      (define-key evil-normal-state-map (kbd ", d") 'lsp-find-definition)
+      (define-key evil-normal-state-map (kbd "SPC l e") 'lsp-treemacs-errors-list)
+    #+END_SRC
+
 ** Magit
 *** Key Bindings
     | Keys        | Function                           |
@@ -401,10 +455,15 @@
     | =SPC g P=   | =magit-push-current-to-pushremote= |
     | =SPC g b c= | =magit-branch-checkout=            |
     | =SPC g d u= | =magit-diff-unstaged=              |
+    | =SPC g B=   | =magit-blame-echo=                 |
 *** Define magit prefix command
     #+BEGIN_SRC emacs-lisp
     (define-prefix-command 'magit)
     (define-key evil-normal-state-map (kbd "SPC g") 'magit)
+
+    (which-key-add-key-based-replacements "SPC g b" "branch")
+    (which-key-add-key-based-replacements "SPC g d" "diff")
+    (which-key-add-key-based-replacements "SPC g s" "stage")
     #+END_SRC
 
 *** Define magit key bindings
@@ -415,6 +474,7 @@
     (define-key evil-normal-state-map (kbd "SPC g P") 'magit-push-current-to-pushremote)
     (define-key evil-normal-state-map (kbd "SPC g b c") 'magit-branch-checkout)
     (define-key evil-normal-state-map (kbd "SPC g d u") 'magit-diff-unstaged)
+    (define-key evil-normal-state-map (kbd "SPC g B") 'magit-blame-echo)
     #+END_SRC
 
 ** neotree evil-mode compatibility
@@ -431,6 +491,18 @@
        (define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
        (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
    #+END_SRC
+
+** eyebrowse
+*** Key Bindings
+    | Keys  | Function                       |
+    |-------+--------------------------------|
+    | =g t= | =eyebrowse-next-window-config= |
+    | =g T= | =eyebrowse-prev-window-config= |
+*** Define Key Bindings
+    #+BEGIN_SRC emacs-lisp
+      (define-key evil-normal-state-map (kbd "g t") 'eyebrowse-next-window-config)
+      (define-key evil-normal-state-map (kbd "g T") 'eyebrowse-prev-window-config)
+    #+END_SRC
 
 * Editing
 ** Autoamtically remove trailing whitespace
